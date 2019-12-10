@@ -68,11 +68,11 @@ class MainForegroundService : Service() {
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         appUsageTimers = getAppUsageTimers()
-        restrictedApps = sharedPrefs.getStringSet("restricted_apps", setOf())!!
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createNotificationChannel()
+        restrictedApps = sharedPrefs.getStringSet("restricted_apps", setOf())!!
 
         // Create persistent notification so that process can stay alive
         val notification = buildNotification(null)
@@ -89,6 +89,7 @@ class MainForegroundService : Service() {
             val notificationManager = getSystemService(NotificationManager::class.java)
             handler = Handler()
             runnable = Runnable {
+                restrictedApps = sharedPrefs.getStringSet("restricted_apps", setOf())!!
                 notificationManager?.notify(NOTIFICATION_ID, buildNotification(getForegroundApp()))
                 checkIfShouldBlockForegroundApp()
                 checkForAppsToUnblock()
