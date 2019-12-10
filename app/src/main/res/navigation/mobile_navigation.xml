@@ -6,12 +6,12 @@
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="com.kvamme.goldenpegasusius.ui.main.MainFragment"
+        android:name="com.goldenkvack.unstuck.ui.main.MainFragment"
         android:label="@string/title_appblocking" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.kvamme.goldenpegasusius.ui.settings.SettingsFragment"
+        android:name="com.goldenkvack.unstuck.ui.settings.SettingsFragment"
         android:label="@string/title_settings" />
 
 </navigation>
