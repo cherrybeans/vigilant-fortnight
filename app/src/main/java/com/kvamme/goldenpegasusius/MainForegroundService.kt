@@ -67,7 +67,7 @@ class MainForegroundService : Service() {
         super.onCreate()
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        appUsageTimers = mutableMapOf()
+        appUsageTimers = getAppUsageTimers()
         restrictedApps = sharedPrefs.getStringSet("restricted_apps", setOf())!!
     }
 
@@ -654,6 +654,18 @@ class MainForegroundService : Service() {
             .build()
 
         return notification
+    }
+
+    private fun getAppUsageTimers(): MutableMap<String, Long> {
+        val type = object : TypeToken<MutableMap<String, Long>>() {}.type
+        val appUsageTimersJson = sharedPrefs.getString("appUsageTimers", null)
+
+        appUsageTimers =
+            if (appUsageTimersJson !== null) MainActivity.gson.fromJson(
+                appUsageTimersJson,
+                type
+            ) else mutableMapOf()
+        return appUsageTimers
     }
 }
 
