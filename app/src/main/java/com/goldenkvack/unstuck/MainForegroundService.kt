@@ -621,6 +621,20 @@ class MainForegroundService : Service() {
         )
 
         var expandedNotificationContent = ""
+        val contentText: String
+        val totalUsageTime = getTotalAppUsageTime()
+
+        if (shouldUseStrictMode()) {
+            val timeLeftMs =
+                TimeUnit.MILLISECONDS.toMinutes(maxTimeLimit - totalUsageTime)
+            contentText = "<i>Strict mode on</i> - Remaining usage time is $timeLeftMs min."
+            expandedNotificationContent = "$contentText<br/>"
+        } else {
+            contentText = "Tracking usage.. Recent usage time is ${TimeUnit.MILLISECONDS.toMinutes(
+                totalUsageTime
+            )} min."
+        }
+
         var isFirstElement = true
         val sortedRecentAppsMap: SortedMap<String, String> = sortedMapOf()
         val recentApps =
@@ -638,14 +652,16 @@ class MainForegroundService : Service() {
         }
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("App blocking notifications")
-            .setContentText("Tracking usage..")
+            .setContentTitle("Usage tracker - Take a break whenever, Pegasus.")
+            .setContentText(fromHtml(contentText, HtmlCompat.FROM_HTML_MODE_LEGACY))
             .setSmallIcon(R.mipmap.holy_launcher_round)
             .setContentIntent(pendingIntent)
             .setShowWhen(false)
-            .setStyle(
+            .setOnlyAlertOnce(true)
+        if (recentApps.isNotEmpty()) {
+            notification.setStyle(
                 NotificationCompat.BigTextStyle()
-                    .setBigContentTitle("Usage stats")
+                    .setBigContentTitle("Usage stats - This is how you're doing, Pegasus.")
                     .bigText(
                         fromHtml(
                             expandedNotificationContent,
@@ -653,10 +669,8 @@ class MainForegroundService : Service() {
                         )
                     )
             )
-            .setOnlyAlertOnce(true)
-            .build()
-
-        return notification
+        }
+        return notification.build()
     }
 
     private fun getAppUsageTimers(): MutableMap<String, Long> {
@@ -669,6 +683,25 @@ class MainForegroundService : Service() {
                 type
             ) else mutableMapOf()
         return appUsageTimers
+    }
+
+    private fun getTotalAppUsageTime(): Long {
+        var totalAppUsageTime: Long = 0
+
+        appUsageTimers.forEach {
+            totalAppUsageTime += it.value
+        }
+        return totalAppUsageTime
+    }
+
+    private fun convertMsToHoursToString(millis: Long, usePretty: Boolean = false): String {
+        val hours = TimeUnit.MILLISECONDS.toHours(millis)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(hours)
+
+        return String.format(
+            if (usePretty) "%dh %dmin" else "%dh %02dmin",
+            hours, minutes
+        )
     }
 }
 

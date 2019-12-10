@@ -53,7 +53,6 @@ class MainFragment : Fragment() {
     private lateinit var packageManager: PackageManager
     private lateinit var currentlyBlockedApps: MutableMap<String, Long>
     private lateinit var appUsageTimers: MutableMap<String, Long>
-    private lateinit var appStepCounters: MutableMap<String, Int>
     private lateinit var sharedPrefs: SharedPreferences
     private lateinit var usageStatsMap: MutableMap<String, UsageStats>
     private lateinit var restrictedApps: Set<String>
