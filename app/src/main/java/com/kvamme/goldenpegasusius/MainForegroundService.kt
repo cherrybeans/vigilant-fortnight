@@ -98,7 +98,7 @@ class MainForegroundService : Service() {
             }
             handler.postDelayed(runnable, UPDATE_INTERVAL)
         }
-        return START_NOT_STICKY
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
