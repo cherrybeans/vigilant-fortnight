@@ -227,7 +227,7 @@ class MainFragment : Fragment() {
         val alert = AlertDialog.Builder(activity!!)
         val titleMessage = SpannableStringBuilder()
             .append("Allow ")
-            .bold { append("Unstuck") }
+            .bold { append("Unstuck ") }
             .append("to access your usage data?")
 
         alert.setTitle(titleMessage)

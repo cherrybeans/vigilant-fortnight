@@ -14,7 +14,7 @@ android {
         versionCode 1
         versionName "0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "goldenkvack-unstuck$versionName")
+        setProperty("archivesBaseName", "goldenkvack-unstuck-$versionName")
     }
     buildTypes {
         release {

@@ -655,7 +655,7 @@ class MainForegroundService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Usage tracker - Take a break whenever, Pegasus.")
             .setContentText(fromHtml(contentText, HtmlCompat.FROM_HTML_MODE_LEGACY))
-            .setSmallIcon(R.mipmap.holy_launcher_round)
+            .setSmallIcon(R.drawable.ic_pegasus)
             .setContentIntent(pendingIntent)
             .setShowWhen(false)
             .setOnlyAlertOnce(true)
